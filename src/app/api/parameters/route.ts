@@ -1,4 +1,4 @@
-import { client } from '@/utils/common';
+import { client } from '@/app/api/utils/common';
 import { NextRequest, NextResponse } from 'next/server';
 // 模拟获取请求信息的函数
 function getInfo(request: NextRequest) {
