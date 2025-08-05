@@ -1,0 +1,2 @@
+patchedDependencies:
+  dify-client: patches/dify-client.patch
