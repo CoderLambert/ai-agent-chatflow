@@ -23,9 +23,6 @@ importers:
       clsx:
         specifier: ^2.1.1
         version: 2.1.1
-      dify-client:
-        specifier: ^2.3.2
-        version: 2.3.2
       i18next:
         specifier: ^25.3.2
         version: 25.3.2(typescript@5.9.2)
@@ -932,9 +929,6 @@ packages:
   detect-libc@2.0.4:
     resolution: {integrity: sha512-3UDv+G9CsCKO1WKMGw9fwq/SWJYbI0c5Y7LU1AXYoDdbhE2AHQ6N6Nb34sG8Fj7T5APy8qXDCKuuIHd1BR0tVA==}
     engines: {node: '>=8'}
-
-  dify-client@2.3.2:
-    resolution: {integrity: sha512-gVvYf+rXWSx452Bc+qZjMulU0P/q9D+twSp/XUNtOSyAqiEKuCNPUGrmXbWr49isAP+4NVlJjmA/eQWyNRJY5A==}
 
   doctrine@2.1.0:
     resolution: {integrity: sha512-35mSku4ZXK0vfCuHEDAwt55dg2jNajHZ1odvF+8SSr82EsZY4QmXfuWso8oEd8zRhVObSN18aM0CjSdoBX7zIw==}
@@ -2852,12 +2846,6 @@ snapshots:
   delayed-stream@1.0.0: {}
 
   detect-libc@2.0.4: {}
-
-  dify-client@2.3.2:
-    dependencies:
-      axios: 1.11.0
-    transitivePeerDependencies:
-      - debug
 
   doctrine@2.1.0:
     dependencies:
