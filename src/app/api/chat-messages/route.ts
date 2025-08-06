@@ -11,15 +11,16 @@ export async function POST(request: NextRequest) {
     response_mode: responseMode,
   } = body
   const { user } = getInfo(request)
-  const isStreaming =  responseMode === "streaming"
+  const isStreaming = responseMode === "streaming"
   const res = await client.createChatMessage(inputs, query, user, responseMode, conversationId, files)
-  if(isStreaming) {
-    return new Response(res.data, {
-      headers: {
-        ...res.headers,
-        'Content-Type': 'text/event-stream',
-      },
+  if (isStreaming) {
+    const headers = new Headers({
+      ...(res.headers as Record<string, string>),
+      'Content-Type': 'text/event-stream',
     })
-  } else 
-  return new Response(res.data as any)
+    return new Response(res.data as any, {
+      headers,
+    })
+  } else
+    return new Response(res.data as any)
 }
