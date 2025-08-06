@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { updateFeedback } from '@/services';
 
 export default function MessageFeedbacks() {
   const [response, setResponse] = useState<any>(null);
@@ -27,27 +28,11 @@ export default function MessageFeedbacks() {
         rating,
       };
       
-      console.log('请求URL:', `/api/messages/${messageId}/feedbacks`);
+      const url = `/messages/${messageId}/feedbacks`;
+      console.log('请求URL:', url);
       console.log('请求体:', requestBody);
       
-      const response = await fetch(`/api/messages/${messageId}/feedbacks`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-      
-      console.log('响应状态:', response.status);
-      console.log('响应头:', Object.fromEntries(response.headers.entries()));
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('错误响应内容:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
-      
-      const data = await response.json();
+      const data = await updateFeedback({ url, body: requestBody });
       setResponse(data);
       console.log('消息反馈响应:', data);
     } catch (error) {

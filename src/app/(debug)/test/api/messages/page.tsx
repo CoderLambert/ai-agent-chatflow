@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { fetchChatList } from '@/services';
 
 export default function Messages() {
   const [messages, setMessages] = useState<any>(null);
@@ -21,18 +22,7 @@ export default function Messages() {
       
       console.log('请求URL:', url);
       
-      const response = await fetch(url);
-      
-      console.log('响应状态:', response.status);
-      console.log('响应头:', Object.fromEntries(response.headers.entries()));
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('错误响应内容:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchChatList(conversationId);
       setMessages(data);
       console.log('获取的消息:', data);
     } catch (error) {

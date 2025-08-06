@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { fetchAppParams, fetchConversations, fetchChatList } from '@/services';
 
 export default function ApiStatus() {
   const [status, setStatus] = useState<any>(null);
@@ -16,66 +17,62 @@ export default function ApiStatus() {
     try {
       // 检查参数API
       console.log('检查参数API...');
-      const paramsResponse = await fetch('/api/parameters');
-      console.log('参数API状态:', paramsResponse.status);
+      let paramsData, conversationsData, messagesData;
+      let paramsStatus = 200, conversationsStatus = 200, messagesStatus = 200;
+      let paramsOk = true, conversationsOk = true, messagesOk = true;
+      let paramsError = '', conversationsError = '', messagesError = '';
+      try {
+        paramsData = await fetchAppParams();
+      } catch (e: any) {
+        paramsStatus = e?.response?.status || 500;
+        paramsOk = false;
+        paramsError = e?.message || '未知错误';
+      }
+      console.log('参数API状态:', paramsStatus);
       
       // 检查对话API
       console.log('检查对话API...');
-      const conversationsResponse = await fetch('/api/conversations');
-      console.log('对话API状态:', conversationsResponse.status);
+      try {
+        conversationsData = await fetchConversations();
+      } catch (e: any) {
+        conversationsStatus = e?.response?.status || 500;
+        conversationsOk = false;
+        conversationsError = e?.message || '未知错误';
+      }
+      console.log('对话API状态:', conversationsStatus);
       
       // 检查消息API
       console.log('检查消息API...');
-      const messagesResponse = await fetch('/api/messages');
-      console.log('消息API状态:', messagesResponse.status);
+      try {
+        messagesData = await fetchChatList("");
+      } catch (e: any) {
+        messagesStatus = e?.response?.status || 500;
+        messagesOk = false;
+        messagesError = e?.message || '未知错误';
+      }
+      console.log('消息API状态:', messagesStatus);
       
       const statusData = {
         timestamp: new Date().toISOString(),
         parameters: {
-          status: paramsResponse.status,
-          ok: paramsResponse.ok,
-          url: '/api/parameters'
+          status: paramsStatus,
+          ok: paramsOk,
+          url: '/api/parameters',
+          error: paramsOk ? undefined : paramsError,
         },
         conversations: {
-          status: conversationsResponse.status,
-          ok: conversationsResponse.ok,
-          url: '/api/conversations'
+          status: conversationsStatus,
+          ok: conversationsOk,
+          url: '/api/conversations',
+          error: conversationsOk ? undefined : conversationsError,
         },
         messages: {
-          status: messagesResponse.status,
-          ok: messagesResponse.ok,
-          url: '/api/messages'
-        }
+          status: messagesStatus,
+          ok: messagesOk,
+          url: '/api/messages',
+          error: messagesOk ? undefined : messagesError,
+        },
       };
-      
-      // 尝试获取错误详情
-      if (!paramsResponse.ok) {
-        try {
-          const errorText = await paramsResponse.text();
-          statusData.parameters.error = errorText;
-        } catch (e) {
-          statusData.parameters.error = '无法读取错误详情';
-        }
-      }
-      
-      if (!conversationsResponse.ok) {
-        try {
-          const errorText = await conversationsResponse.text();
-          statusData.conversations.error = errorText;
-        } catch (e) {
-          statusData.conversations.error = '无法读取错误详情';
-        }
-      }
-      
-      if (!messagesResponse.ok) {
-        try {
-          const errorText = await messagesResponse.text();
-          statusData.messages.error = errorText;
-        } catch (e) {
-          statusData.messages.error = '无法读取错误详情';
-        }
-      }
-      
       setStatus(statusData);
       console.log('API状态检查结果:', statusData);
     } catch (error) {

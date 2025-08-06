@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { sendChatMessage } from '@/services';
 
 export default function ChatMessages() {
   const [response, setResponse] = useState<any>(null);
@@ -21,40 +22,52 @@ export default function ChatMessages() {
     setResponse(null);
     
     try {
-      const requestBody: any = {
+      const requestBody: Record<string, any> = {
         inputs: inputs ? JSON.parse(inputs) : {},
         query,
         files: files ? JSON.parse(files) : [],
         response_mode: responseMode,
       };
-
       if (conversationId) {
         requestBody.conversation_id = conversationId;
       }
-
       console.log('请求URL:', '/api/chat-messages');
       console.log('请求体:', requestBody);
-
-      const response = await fetch('/api/chat-messages', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
+      // 适配 sendChatMessage
+      let resultData: any = '';
+      await sendChatMessage(requestBody, {
+        onData: (data: any) => {
+          console.log('onData: ', data)
+          resultData += typeof data === 'string' ? data : JSON.stringify(data);
+          setResponse(resultData)
         },
-        body: JSON.stringify(requestBody),
+        onCompleted: (data) => {
+          console.log('onCompleted: ', data)
+
+          // setResponse(resultData);
+        },
+        onFile: () => {},
+        onThought: () => {},
+        onMessageEnd: (m) => {
+          console.log('onMessageEnd: ', m)
+
+        },
+        onMessageReplace: (m) => {
+          console.log('onMessageReplace: ', m)
+        },
+        onError: (err: any) => {
+          setError(err?.message || '发送聊天消息失败');
+        },
+        onWorkflowStarted: () => {},
+        onNodeStarted: () => {},
+        onNodeFinished: () => {},
+        onWorkflowFinished: () => {},
       });
-      
-      console.log('响应状态:', response.status);
-      console.log('响应头:', Object.fromEntries(response.headers.entries()));
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('错误响应内容:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      // 如果是阻塞模式，直接 setResponse
+      if (responseMode === 'blocking') {
+        setResponse(resultData);
       }
-      
-      const data = await response.json();
-      setResponse(data);
-      console.log('聊天消息响应:', data);
+      console.log('聊天消息响应:', resultData);
     } catch (error) {
       console.error('发送聊天消息失败:', error);
       setError(error instanceof Error ? error.message : '发送聊天消息失败');
@@ -111,7 +124,7 @@ export default function ChatMessages() {
           </div>
           
           <div>
-            <label className="block text-sm font-medium mb-1">响应模式:</label>
+            <label className="block text-sm font-medium mb-1">响应模式: { responseMode }</label>
             <select
               value={responseMode}
               onChange={(e) => setResponseMode(e.target.value)}
@@ -149,11 +162,11 @@ export default function ChatMessages() {
           </div>
         )}
         
-        {response && (
+        { (
           <div className="mt-4 p-4 bg-gray-100 rounded">
             <h3 className="font-bold mb-2">响应结果:</h3>
             <pre className="text-sm overflow-auto max-w-3xl">
-              {JSON.stringify(response, null, 2)}
+              {response}
             </pre>
           </div>
         )}

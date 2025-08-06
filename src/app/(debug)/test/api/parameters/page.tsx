@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { useState } from "react";
 import Link from "next/link";
+import { fetchAppParams } from '@/services';
 
 export default function Parameters() {
   const [parameters, setParameters] = useState<any>(null);
@@ -16,19 +17,7 @@ export default function Parameters() {
     
     try {
       console.log('请求URL:', '/api/parameters');
-      
-      const response = await fetch('/api/parameters');
-      
-      console.log('响应状态:', response.status);
-      console.log('响应头:', Object.fromEntries(response.headers.entries()));
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('错误响应内容:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchAppParams();
       setParameters(data);
       console.log('获取的参数:', data);
     } catch (error) {

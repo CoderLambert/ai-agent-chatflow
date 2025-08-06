@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { fetchConversations } from '@/services';
 
 export default function Conversations() {
   const [conversations, setConversations] = useState<any>(null);
@@ -15,19 +16,7 @@ export default function Conversations() {
     
     try {
       console.log('请求URL:', '/api/conversations');
-      
-      const response = await fetch('/api/conversations');
-      
-      console.log('响应状态:', response.status);
-      console.log('响应头:', Object.fromEntries(response.headers.entries()));
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('错误响应内容:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
-      }
-      
-      const data = await response.json();
+      const data = await fetchConversations();
       setConversations(data);
       console.log('获取的对话:', data);
     } catch (error) {

@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { generationConversationName } from '@/services';
 
 export default function ConversationName() {
   const [response, setResponse] = useState<any>(null);
@@ -29,32 +30,26 @@ export default function ConversationName() {
     setResponse(null);
     
     try {
-      const requestBody = {
-        name: autoGenerate ? "" : name,
-        auto_generate: autoGenerate,
-      };
-      
-      console.log('请求URL:', `/api/conversations/${conversationId}/name`);
-      console.log('请求体:', requestBody);
-      
-      const response = await fetch(`/api/conversations/${conversationId}/name`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(requestBody),
-      });
-      
-      console.log('响应状态:', response.status);
-      console.log('响应头:', Object.fromEntries(response.headers.entries()));
-      
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('错误响应内容:', errorText);
-        throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+      let data;
+      if (autoGenerate) {
+        console.log('请求URL:', `/api/conversations/${conversationId}/name (auto_generate)`);
+        data = await generationConversationName(conversationId);
+      } else {
+        // 保留原有 fetch 逻辑（如需可补充 service 方法）
+        const requestBody = { name, auto_generate: false };
+        console.log('请求URL:', `/api/conversations/${conversationId}/name`);
+        console.log('请求体:', requestBody);
+        const response = await fetch(`/api/conversations/${conversationId}/name`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(requestBody),
+        });
+        if (!response.ok) {
+          const errorText = await response.text();
+          throw new Error(`HTTP error! status: ${response.status}, message: ${errorText}`);
+        }
+        data = await response.json();
       }
-      
-      const data = await response.json();
       setResponse(data);
       console.log('重命名对话响应:', data);
     } catch (error) {
