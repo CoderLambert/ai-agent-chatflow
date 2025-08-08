@@ -41,7 +41,7 @@ export const sendChatMessage = async (
 }
 
 export const fetchConversations = async () => {
-  return get('conversations', { params: { limit: 100, first_id: '' } })
+  return get('conversations', { params: { limit: 100, last_id: '' } })
 }
 
 export const fetchChatList = async (conversationId: string) => {

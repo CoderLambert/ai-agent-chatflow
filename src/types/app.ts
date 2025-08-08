@@ -49,7 +49,6 @@ export type MessageRating = typeof MessageRatings[number]
 
 export type Feedbacktype = {
   rating: MessageRating
-  content?: string | null
 }
 
 export type MessageMore = {
