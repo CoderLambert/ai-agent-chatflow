@@ -61,19 +61,19 @@ export default function ApiTestIndex() {
   ];
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans items-center justify-items-center min-h-screen p-4 pb-20">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full max-w-4xl">
         <div className="text-center">
           <h1 className="text-3xl font-bold mb-4">API 测试页面</h1>
-          <p className="text-gray-600">选择要测试的API功能</p>
+          <p className="text-gray-600 text-base">选择要测试的API功能</p>
         </div>
         
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+        <div className="w-full flex flex-col gap-4">
           {apiTests.map((test, index) => (
             <Link
               key={index}
               href={test.path}
-              className="block p-6 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
+              className="block px-6  py-3 bg-white border border-gray-200 rounded-lg shadow-sm hover:shadow-md transition-shadow duration-200"
             >
               <div className="flex items-center justify-between mb-3">
                 <h3 className="text-lg font-semibold text-gray-900">{test.name}</h3>
