@@ -28,12 +28,12 @@ const LocaleLayout = async ({
     <html lang={locale ?? 'en'} className="h-full">
       <body className={inter.className}>
         {/* Main content wrapper with safe padding */}
-        <div className="flex min-h-screen flex-col px-safe-left pr-safe-right pt-safe-top pb-safe-bottom">
+        <div className="flex min-h-screen flex-col px-safe-left pr-safe-right pt-safe-top pb-safe-bottom overflow-auto">
           <Suspense fallback={<div>Loading...</div>}>
             {children}
           </Suspense>
         </div>
-        
+
         <script
           dangerouslySetInnerHTML={{
             __html: `
