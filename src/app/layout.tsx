@@ -2,7 +2,6 @@ import { getLocaleOnServer } from '@/i18n/server'
 import { Suspense } from 'react'
 import { Inter } from 'next/font/google'
 import '@/styles/tailwind.css'
-
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
@@ -15,6 +14,8 @@ export const viewport = {
   initialScale: 1,
   maximumScale: 1,
   userScalable: false,
+  viewportFit: "cover", // For iOS safe areas
+  interactiveWidget: "resizes-content", // 让视口随键盘调整（Chrome/Android支持）
 }
 
 const LocaleLayout = async ({
@@ -25,11 +26,14 @@ const LocaleLayout = async ({
   const locale = await getLocaleOnServer()
   return (
     <html lang={locale ?? 'en'} className="h-full">
-      <body className={`h-full ${inter.className} bg-white`}>
-        <Suspense fallback={<div>Loading...</div>}>
-          {children}
-        </Suspense>
-
+      <body className={inter.className}>
+        {/* Main content wrapper with safe padding */}
+        <div className="flex min-h-screen flex-col px-safe-left pr-safe-right pt-safe-top pb-safe-bottom">
+          <Suspense fallback={<div>Loading...</div>}>
+            {children}
+          </Suspense>
+        </div>
+        
         <script
           dangerouslySetInnerHTML={{
             __html: `
