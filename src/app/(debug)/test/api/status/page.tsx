@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { fetchAppParams, fetchConversations, fetchChatList } from '@/services';
-
+import { Button } from "@/components/ui/button";
 export default function ApiStatus() {
   const [status, setStatus] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -92,7 +92,7 @@ export default function ApiStatus() {
   }
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans w-full p-2">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full max-w-2xl">
         <div className="flex items-center gap-4">
           <Link 
@@ -104,13 +104,13 @@ export default function ApiStatus() {
           <h1 className="text-2xl font-bold">API状态检查</h1>
         </div>
         
-        <button 
+        <Button 
           onClick={checkApiStatus}
           disabled={loading}
           className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
         >
           {loading ? '检查中...' : '检查API状态'}
-        </button>
+        </Button>
         
         {error && (
           <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded max-w-3xl">
@@ -120,7 +120,7 @@ export default function ApiStatus() {
         )}
         
         {status && (
-          <div className="mt-4 p-4 bg-gray-100 rounded w-full">
+          <div className="prose mt-4 mx-2 p-4 bg-gray-100 rounded w-full">
             <h3 className="font-bold mb-4">API状态检查结果:</h3>
             <div className="space-y-4">
               <div>
@@ -128,7 +128,7 @@ export default function ApiStatus() {
               </div>
               
               {Object.entries(status).filter(([key]) => key !== 'timestamp').map(([apiName, apiStatus]: [string, any]) => (
-                <div key={apiName} className="border border-gray-300 rounded p-3">
+                <div key={apiName} className="prose mx-2 border border-gray-300 rounded p-3">
                   <div className="flex items-center justify-between mb-2">
                     <h5 className="font-medium capitalize">{apiName} API</h5>
                     <span className={`font-semibold ${getStatusColor(apiStatus.ok)}`}>

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { fetchConversations } from '@/services';
-
+import { Button } from "@/components/ui/button";
 export default function Conversations() {
   const [conversations, setConversations] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -28,9 +28,9 @@ export default function Conversations() {
   }
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <div className="flex items-center gap-4">
+    <div className="p-2">
+      <main className="flex flex-col gap-2">
+        <div className="flex   items-center gap-4">
           <Link 
             href="/test/api"
             className="text-blue-500 hover:text-blue-700 text-sm"
@@ -40,13 +40,12 @@ export default function Conversations() {
           <h1 className="text-2xl font-bold">对话列表测试</h1>
         </div>
         
-        <button 
+        <Button 
           onClick={handleClick}
           disabled={loading}
-          className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
         >
           {loading ? '获取中...' : '获取对话列表'}
-        </button>
+        </Button>
         
         {error && (
           <div className="mt-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded max-w-3xl">
@@ -56,8 +55,8 @@ export default function Conversations() {
         )}
         
         {conversations && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
-            <h3 className="font-bold mb-2">获取到的对话:</h3>
+          <div className="prose mt-4 p-4 bg-gray-100 rounded">
+            <h3 className="prose-h3 font-bold mb-2">获取到的对话:</h3>
             <pre className="text-sm overflow-auto max-w-3xl">
               {JSON.stringify(conversations, null, 2)}
             </pre>

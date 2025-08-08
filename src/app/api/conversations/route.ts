@@ -5,7 +5,10 @@ import { client, getInfo, setSession } from '@/app/api/utils/common'
 export async function GET(request: NextRequest) {
   const { sessionId, user } = getInfo(request)
   try {
-    const { data }: any = await client.getConversations(user)
+    const { searchParams } = new URL(request.url)
+    const last_id = searchParams.get('last_id')
+    const limit = Number(searchParams.get('limit'))
+    const { data }: any = await client.getConversations(user, last_id, limit)
     return NextResponse.json(data, {
       headers: setSession(sessionId),
     })

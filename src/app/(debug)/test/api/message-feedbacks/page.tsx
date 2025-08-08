@@ -3,14 +3,16 @@
 import { useState } from "react";
 import Link from "next/link";
 import { updateFeedback } from '@/services';
-
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Feedbacktype, MessageRating } from "@/types/app";
 export default function MessageFeedbacks() {
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   
   const [messageId, setMessageId] = useState("");
-  const [rating, setRating] = useState("like");
+  const [rating, setRating] = useState<MessageRating>("like");
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ export default function MessageFeedbacks() {
     setResponse(null);
     
     try {
-      const requestBody = {
+      const requestBody: Feedbacktype = {
         rating,
       };
       
@@ -44,9 +46,9 @@ export default function MessageFeedbacks() {
   }
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start w-full max-w-3xl">
-        <div className="flex items-center gap-4">
+    <div className="font-sans w-full p-2">
+      <main className="flex flex-col gap-4 ">
+        <div className="flex flex-row items-center gap-4">
           <Link 
             href="/test/api"
             className="text-blue-500 hover:text-blue-700 text-sm"
@@ -56,37 +58,37 @@ export default function MessageFeedbacks() {
           <h1 className="text-2xl font-bold">消息反馈测试</h1>
         </div>
         
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
-          <div>
-            <label className="block text-sm font-medium mb-1">消息ID:</label>
-            <input
+        <form onSubmit={handleSubmit} className="prose flex flex-col justify-start items-start gap-4 w-full">
+          <div className="w-full">
+            <label className="block text-sm font-medium mb-2">消息ID:</label>
+            <Input
               type="text"
               value={messageId}
               onChange={(e) => setMessageId(e.target.value)}
               placeholder="请输入消息ID"
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             />
           </div>
           
-          <div>
-            <label className="block text-sm font-medium mb-1">评分:</label>
+          <div className="w-full flex flex-col gap-2">
+            <label className="block text-sm font-medium mb-2">评分:</label>
             <select
-              value={rating}
-              onChange={(e) => setRating(e.target.value)}
-              className="w-full px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
+              value={rating ?? ""}
+              onChange={(e) => setRating(e.target.value as MessageRating)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="like">喜欢</option>
               <option value="dislike">不喜欢</option>
             </select>
           </div>
           
-          <button 
+          <Button 
             type="submit"
             disabled={loading || !messageId}
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+            className="w-full px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 disabled:bg-gray-400 disabled:cursor-not-allowed"
           >
             {loading ? '发送中...' : '发送反馈'}
-          </button>
+          </Button>
         </form>
         
         {error && (
@@ -97,7 +99,7 @@ export default function MessageFeedbacks() {
         )}
         
         {response && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
+          <div className="prose mt-4 p-4 bg-gray-100 rounded">
             <h3 className="font-bold mb-2">反馈结果:</h3>
             <pre className="text-sm overflow-auto max-w-3xl">
               {JSON.stringify(response, null, 2)}

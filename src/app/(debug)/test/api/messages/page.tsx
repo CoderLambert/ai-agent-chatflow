@@ -3,7 +3,8 @@
 import { useState } from "react";
 import Link from "next/link";
 import { fetchChatList } from '@/services';
-
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 export default function Messages() {
   const [messages, setMessages] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -34,7 +35,7 @@ export default function Messages() {
   }
 
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
+    <div className="font-sans w-full p-2">
       <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
         <div className="flex items-center gap-4">
           <Link 
@@ -47,20 +48,20 @@ export default function Messages() {
         </div>
         
         <div className="flex flex-col gap-4 w-full max-w-3xl">
-          <input
+          <Input
             type="text"
             placeholder="对话ID (可选)"
             value={conversationId}
             onChange={(e) => setConversationId(e.target.value)}
             className="px-3 py-2 border border-gray-300 rounded focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
-          <button 
+          <Button 
             onClick={handleClick}
             disabled={loading}
             className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
           >
             {loading ? '获取中...' : '获取消息'}
-          </button>
+          </Button>
         </div>
         
         {error && (
@@ -71,11 +72,11 @@ export default function Messages() {
         )}
         
         {messages && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
+          <div className="prose mt-4 p-4 bg-gray-100 rounded">
             <h3 className="font-bold mb-2">获取到的消息:</h3>
-            <pre className="text-sm overflow-auto max-w-3xl">
+            <p className="text-sm overflow-auto w-full">
               {JSON.stringify(messages, null, 2)}
-            </pre>
+            </p>
           </div>
         )}
       </main>

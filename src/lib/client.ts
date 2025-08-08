@@ -16,13 +16,13 @@ interface HeaderParams {
 type User = string | Record<string, unknown>;
 
 export interface IFileResponse {
-    "id": string,
-    "name": string,
-    "size": number,
-    "extension": string,
-    "mime_type": string,
-    "created_by": number,
-    "created_at": number,
+  "id": string,
+  "name": string,
+  "size": number,
+  "extension": string,
+  "mime_type": string,
+  "created_by": number,
+  "created_at": number,
 }
 
 export const routes = {
@@ -184,8 +184,8 @@ export class ChatClient extends DifyClient {
     );
   }
 
-  getConversations(user: User, first_id: string | null = null, limit: number | null = null, pinned: boolean | null = null) {
-    const params: Params = { user, first_id, limit, pinned };
+  getConversations(user: User, last_id: string | null = null, limit: number | null = null) {
+    const params: Params = { user, last_id, limit };
     return this.sendRequest(
       routes.getConversations.method,
       routes.getConversations.url(),

@@ -78,7 +78,7 @@ export default function FileUpload() {
           <h1 className="text-2xl font-bold">文件上传测试</h1>
         </div>
         
-        <form onSubmit={handleSubmit} className="flex flex-col gap-4 w-full">
+        <form onSubmit={handleSubmit} className="prose flex flex-col gap-4 w-full">
           <div>
             <label className="block text-sm font-medium mb-1">选择文件:</label>
             <input
@@ -110,11 +110,11 @@ export default function FileUpload() {
         )}
         
         {response && (
-          <div className="mt-4 p-4 bg-gray-100 rounded">
+          <div className="prose mt-4 p-4 bg-gray-100 rounded">
             <h3 className="font-bold mb-2">上传结果:</h3>
-            <pre className="text-sm overflow-auto max-w-3xl">
+            <p className="text-sm overflow-auto max-w-3xl">
               {response}
-            </pre>
+            </p>
           </div>
         )}
       </main>
