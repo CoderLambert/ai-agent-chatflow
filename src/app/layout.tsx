@@ -1,8 +1,9 @@
 import { getLocaleOnServer } from '@/i18n/server'
 import { Suspense } from 'react'
-import RemAdapter from '@/app/components/RemAdapter';
+import { Inter } from 'next/font/google'
+import '@/styles/tailwind.css'
 
-import "./globals.css";
+const inter = Inter({ subsets: ['latin'] })
 
 export const metadata = {
   title: 'AI Agent Chatflow',
@@ -24,30 +25,28 @@ const LocaleLayout = async ({
   const locale = await getLocaleOnServer()
   return (
     <html lang={locale ?? 'en'} className="h-full">
-      <body className="h-full">
-        <RemAdapter />
+      <body className={`h-full ${inter.className} bg-white`}>
         <Suspense fallback={<div>Loading...</div>}>
           {children}
-        {/* <script
+        </Suspense>
+
+        <script
           dangerouslySetInnerHTML={{
             __html: `
-              (function() {
-                var rem = function() {
-                  var designWidth = 750;
-                  var baseSize = 75;
-                  var clientWidth = document.documentElement.clientWidth;
-                  var fontSize = (clientWidth / designWidth) * baseSize + 'px';
-                  document.documentElement.style.fontSize = fontSize;
-                  console.log('Font size set to: ' + fontSize);
-                };
-                rem();
-                window.addEventListener('resize', rem);
-                window.addEventListener('orientationchange', rem);
-              })();
-            `
+              const UI_WIDTH = 750;
+              const baseFontSize = 200;
+
+              function setRootFontSize() {
+                const width = document.documentElement?.clientWidth;
+                const fontSize = ((parseFloat(width) / UI_WIDTH) * baseFontSize).toFixed(4);
+                document.documentElement.style['fontSize'] = fontSize + 'px';
+                document.documentElement.style.setProperty('--tpx', '0.01rem');
+              }
+              setRootFontSize();
+              window.addEventListener('resize', setRootFontSize);
+            `,
           }}
-        /> */}
-        </Suspense>
+        />
       </body>
     </html>
   )
