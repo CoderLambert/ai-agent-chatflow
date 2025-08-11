@@ -1,27 +1,36 @@
-"use client";
-
+import Image from "next/image";
+import maomaoPng from "@/assets/maomao@2x.png";
+import styles from './chatPage.module.css'
+import FAQGuide from '@/app/components/FAQGuide'
+import {INavieAppSuggesQuestionItem} from "@/types/app"
 export default function Home() {
+
+  const questions: INavieAppSuggesQuestionItem[] = [
+    {
+        "收派": [
+            "联系不上客户怎么办？",
+            "打火机可以寄吗？",
+            "包装破损了怎么办？"
+        ]
+    }, 
+    {
+        "数据统计": [
+          "联系不上客户怎么办？",
+          "打火机可以寄吗？",
+          "包装破损了怎么办？"
+        ]
+    }
+]
+
   return (
-  <div>
-        <h1 className="text-2xl">AI Agent Chatflow</h1>
+    <div className={styles.chatPage}>
+      <div className={styles.header}>
+        <Image className={styles.logo} src={maomaoPng} alt="Maomao" />
+        <h1 className={styles.intro}>我是MAOMAO，你的智能助手</h1>
+      </div>
 
-        <div className="w-[375px] text-base border border-black rounded-md p-2"> 
-          w-375px 
-        </div> 
-
-        <div className="w-[750px] text-base border border-black"> w-750px </div> 
-        <article className="prose lg:prose-xl">
-          <h1>Garlic bread with cheese: What the science tells us</h1>
-          <p>
-            For years parents have espoused the health benefits of eating garlic bread with cheese to their
-            children, with the food earning such an iconic status in our culture that kids will often dress
-            up as warm, cheesy loaf for Halloween.
-          </p>
-          <p>
-            But a recent study shows that the celebrated appetizer may be linked to a series of rabies cases
-            springing up around the country.
-          </p>
-        </article>
+      {/* 问题建议 */}
+      <FAQGuide suggestions={questions}></FAQGuide>
     </div>
   );
 }

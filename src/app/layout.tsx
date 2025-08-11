@@ -1,9 +1,8 @@
-import { getLocaleOnServer } from '@/i18n/server'
+// import { getLocaleOnServer } from '@/i18n/server'
 import { Suspense } from 'react'
 import { Inter } from 'next/font/google'
 import '@/styles/tailwind.css'
 const inter = Inter({ subsets: ['latin'] })
-
 export const metadata = {
   title: 'AI Agent Chatflow',
   description: 'A chat application powered by AI agents',
@@ -23,11 +22,13 @@ const LocaleLayout = async ({
 }: {
   children: React.ReactNode
 }) => {
-  const locale = await getLocaleOnServer()
+  // const locale = await getLocaleOnServer()
   return (
-    <html lang={locale ?? 'en'} className="h-full">
+    <html lang='en' className="h-full" style={{ 
+      fontSize: '100px',  // 注意：驼峰式写法 fontSize，而不是 font-size
+      '--tpx': '0.01rem'  // 自定义 CSS 变量使用字符串值
+    } as React.CSSProperties}>
       <body className={inter.className}>
-        {/* Main content wrapper with safe padding */}
         <div className="flex min-h-screen flex-col px-safe-left pr-safe-right pt-safe-top pb-safe-bottom overflow-auto">
           <Suspense fallback={<div>Loading...</div>}>
             {children}
