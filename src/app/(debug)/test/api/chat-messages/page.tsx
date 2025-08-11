@@ -6,8 +6,6 @@ import { sendChatMessage } from '@/services';
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
 import { Input } from "@/components/ui/input";
-import {Select} from "@/components/ui/select";
-// import { Textarea } from "@/components/ui/textarea";
 export default function ChatMessages() {
   const [response, setResponse] = useState<any>(null);
   const [loading, setLoading] = useState(false);
