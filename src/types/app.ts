@@ -249,12 +249,10 @@ export type INaviAppConfig = {
 }
 
 // 问题详情
-export type INaviAppSuggesQuestionItemDetail = {
-  id: string
-  content: string
-}
+export type INaviAppSuggesQuestionItemDetail = string
 // 建议问题类别
 export type INavieAppSuggesQuestionCategory = string
 // 分类配置详情
 export type INavieAppSuggesQuestionItem = Record<INavieAppSuggesQuestionCategory, INaviAppSuggesQuestionItemDetail[]>
+
 
