@@ -231,9 +231,9 @@ export interface IAPPConfig  {
   app_id: string
   api_url: string
 
-  // last_conversation_id 和 first_id 如果前端可以直接本地存储，长久化保持，可以由前端生成
+  // conversation_id 和 first_id 如果前端可以直接本地存储，长久化保持，可以由前端生成
   // 否则需要 jsBridge 调用app进行存储，在下次打开 app 时传回进行初始化配置, 建议直接app提供存储，方便后续存在多轮历史对话管理
-  last_conversation_id: string | null  // 为 null 代表是新会话  存在值的话需要凭借这个 id 获取历史会话消息
+  conversation_id: string | null  // 为 null 代表是新会话  存在值的话需要凭借这个 id 获取历史会话消息
   first_id: string | null           // 默认为 null， 当存在会话消息存在的时候，为当前会话记录第一条消息， 用于向上拉取历史会话消息
 
   // 如果之后需要做会话管理，则需要再添加 会话管理初始化配置
